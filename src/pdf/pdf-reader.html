@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDF 划词翻译阅读器</title>
+    <link rel="stylesheet" href="../../vendor/pdfjs/web/pdf_viewer.css">
+    <link rel="stylesheet" href="pdf-reader.css">
+  </head>
+  <body>
+    <header class="toolbar">
+      <div>
+        <h1>PDF 文本阅读器</h1>
+        <p id="source-url"></p>
+      </div>
+      <div class="toolbar-actions">
+        <button id="zoom-out" type="button" title="缩小">-</button>
+        <span id="zoom-label" class="zoom-label">100%</span>
+        <button id="zoom-in" type="button" title="放大">+</button>
+        <button id="reload" type="button">重新读取</button>
+        <button id="options" type="button">设置</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="viewer" id="viewer">
+        <div id="status" class="status">正在读取 PDF 文本...</div>
+        <div id="pages" class="pages" aria-label="PDF pages"></div>
+      </section>
+    </main>
+
+    <script src="../shared/selection-ui.js"></script>
+    <script type="module" src="pdf-reader.js"></script>
+  </body>
+</html>

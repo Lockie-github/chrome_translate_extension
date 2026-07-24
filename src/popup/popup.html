@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>划词翻译</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup">
+      <header>
+        <h1>划词翻译</h1>
+        <button id="options" type="button">设置</button>
+      </header>
+
+      <button id="open-pdf" class="wide" type="button">用 PDF 文本阅读器打开当前页</button>
+
+      <section id="last" class="last" hidden>
+        <h2>最近一次翻译</h2>
+        <div class="source" id="source"></div>
+        <div class="result" id="result"></div>
+      </section>
+
+      <p id="status" class="status"></p>
+    </main>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

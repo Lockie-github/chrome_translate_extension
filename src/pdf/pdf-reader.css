@@ -1,0 +1,171 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background: #e8ebf1;
+  color: #111827;
+  margin: 0;
+}
+
+.toolbar {
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #d0d7e2;
+  box-shadow: 0 1px 4px rgba(16, 24, 40, .08);
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  min-height: 60px;
+  padding: 8px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+h1 {
+  font-size: 16px;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+p {
+  color: #667085;
+  font-size: 12px;
+  margin: 4px 0 0;
+  max-width: min(760px, 62vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toolbar-actions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  background: #eef2ff;
+  border: 0;
+  border-radius: 7px;
+  color: #123fbd;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  height: 34px;
+  min-width: 34px;
+  padding: 0 12px;
+}
+
+button:hover {
+  background: #dfe7ff;
+}
+
+.zoom-label {
+  color: #344054;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 650;
+  min-width: 44px;
+  text-align: center;
+}
+
+.layout {
+  margin: 0 auto;
+  padding: 22px 12px 40px;
+}
+
+.viewer {
+  min-height: calc(100vh - 96px);
+}
+
+.status {
+  background: #fff;
+  border: 1px solid #d0d7e2;
+  border-radius: 8px;
+  color: #667085;
+  font-size: 14px;
+  margin: 0 auto 16px;
+  max-width: 960px;
+  padding: 14px 16px;
+}
+
+.status.error {
+  color: #b42318;
+}
+
+.pages {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pdf-page {
+  background: #fff;
+  box-shadow: 0 2px 7px rgba(16, 24, 40, .22);
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.canvas-layer {
+  display: block;
+  inset: 0;
+  position: absolute;
+}
+
+.textLayer {
+  inset: 0;
+  position: absolute;
+  user-select: text;
+  z-index: 2;
+}
+
+.textLayer span,
+.textLayer br {
+  cursor: text;
+}
+
+.textLayer ::selection {
+  background: rgba(20, 92, 255, .24);
+}
+
+.page-label {
+  background: rgba(17, 24, 39, .72);
+  border-radius: 999px;
+  bottom: 8px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  min-width: 16px;
+  padding: 5px 7px;
+  pointer-events: none;
+  position: absolute;
+  right: 8px;
+  text-align: center;
+  z-index: 3;
+}
+
+@media (max-width: 720px) {
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 10px 12px;
+  }
+
+  p {
+    max-width: none;
+  }
+
+  .toolbar-actions {
+    flex-wrap: wrap;
+  }
+
+  .layout {
+    padding: 12px 8px 28px;
+  }
+}

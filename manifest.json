@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "划词大模型翻译",
+  "version": "0.1.0",
+  "description": "选中文本后显示悬浮球，使用自定义大模型 API 翻译网页和 PDF 文本。",
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "划词翻译",
+    "default_icon": "translate.png",
+    "default_popup": "src/popup/popup.html"
+  },
+  "icons": {
+    "16": "translate.png",
+    "32": "translate.png",
+    "48": "translate.png",
+    "128": "translate.png"
+  },
+  "options_page": "src/options/options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "file:///*"
+      ],
+      "js": [
+        "src/shared/selection-ui.js",
+        "src/content/content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "translate.png"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "file:///*"
+      ]
+    }
+  ]
+}
