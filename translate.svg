@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="title desc">
+  <title id="title">Translation robot icon</title>
+  <desc id="desc">A light gray robot chip with black eyes, a slanted mouth, and a translation symbol in the lower-right corner.</desc>
+
+  <defs>
+    <linearGradient id="body-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fafafa"/>
+      <stop offset="0.52" stop-color="#eeeeee"/>
+      <stop offset="1" stop-color="#e5e5e5"/>
+    </linearGradient>
+    <linearGradient id="badge-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7f7f7"/>
+      <stop offset="1" stop-color="#ededed"/>
+    </linearGradient>
+    <filter id="body-shadow" x="-12%" y="-12%" width="130%" height="135%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="1" dy="4" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.52"/>
+    </filter>
+    <filter id="pin-shadow" x="-35%" y="-25%" width="170%" height="160%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.62"/>
+    </filter>
+    <filter id="mouth-shadow" x="-12%" y="-30%" width="130%" height="180%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+    <filter id="badge-shadow" x="-20%" y="-18%" width="150%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="1" dy="2" stdDeviation="2.2" flood-color="#000000" flood-opacity="0.23"/>
+    </filter>
+  </defs>
+
+  <!-- Chip pins -->
+  <g fill="#363636" stroke="#1c1c1c" stroke-width="5" filter="url(#pin-shadow)">
+    <rect x="141" y="49" width="18" height="49" rx="9"/>
+    <rect x="247" y="49" width="18" height="49" rx="9"/>
+    <rect x="353" y="49" width="18" height="49" rx="9"/>
+
+    <rect x="47" y="141" width="50" height="18" rx="9"/>
+    <rect x="47" y="247" width="50" height="18" rx="9"/>
+    <rect x="47" y="353" width="50" height="18" rx="9"/>
+
+    <rect x="415" y="141" width="50" height="18" rx="9"/>
+    <rect x="415" y="247" width="50" height="18" rx="9"/>
+    <rect x="415" y="353" width="50" height="18" rx="9"/>
+
+    <rect x="141" y="415" width="18" height="50" rx="9"/>
+    <rect x="247" y="415" width="18" height="50" rx="9"/>
+    <rect x="353" y="415" width="18" height="50" rx="9"/>
+  </g>
+
+  <!-- Main robot body -->
+  <rect x="97" y="97" width="318" height="318" rx="50" fill="url(#body-fill)" stroke="#666666" stroke-width="6" filter="url(#body-shadow)"/>
+  <rect x="115.5" y="115.5" width="281" height="281" rx="39" fill="none" stroke="#777777" stroke-width="4"/>
+
+  <!-- Face -->
+  <circle cx="176" cy="184" r="42" fill="#000000"/>
+  <circle cx="337" cy="184" r="42" fill="#000000"/>
+  <rect x="128" y="284" width="236" height="36" rx="4" fill="#000000" transform="rotate(-14 246 302)" filter="url(#mouth-shadow)"/>
+
+  <!-- Translation badge -->
+  <g filter="url(#badge-shadow)">
+    <rect x="317.5" y="320.5" width="76" height="77" rx="20" fill="url(#badge-fill)" stroke="#666666" stroke-width="3"/>
+    <rect x="322.5" y="324.5" width="66" height="68" rx="16" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.92"/>
+  </g>
+
+  <!-- The glyphs are paths so their appearance does not depend on installed fonts. -->
+  <g fill="none" stroke="#000000" stroke-width="5.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M346 331v5.5"/>
+    <path d="M333 338h26.5"/>
+    <path d="M337 339c2 7 8.5 15 19.5 20.5"/>
+    <path d="M358.5 339c-2 8-8.8 17-21.5 22"/>
+
+    <path d="M360 376.5c2.2-7 4.7-14.1 7.3-19.8.9-1.9 1.8-2.7 2.8-2.7s1.9.8 2.8 2.7c2.6 5.7 5 12.8 7 19.8"/>
+    <path d="M363.5 366.8h13"/>
+  </g>
+</svg>
