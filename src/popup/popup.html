@@ -13,15 +13,38 @@
         <button id="options" type="button">设置</button>
       </header>
 
-      <button id="open-pdf" class="wide" type="button">用 PDF 文本阅读器打开当前页</button>
+      <form id="translate-form" class="translate-form">
+        <label for="translate-input">中英文互译</label>
+        <textarea
+          id="translate-input"
+          name="text"
+          rows="4"
+          placeholder="输入中文或英文"
+          autofocus
+        ></textarea>
+        <button id="translate" class="primary" type="submit">翻译</button>
+      </form>
 
-      <section id="last" class="last" hidden>
-        <h2>最近一次翻译</h2>
-        <div class="source" id="source"></div>
-        <div class="result" id="result"></div>
+      <section id="translation-result" class="translation-result" aria-live="polite" hidden>
+        <div class="result-heading">
+          <h2 id="result-source"></h2>
+          <span id="result-direction" class="direction"></span>
+        </div>
+
+        <div id="word-result" hidden>
+          <h3>释义</h3>
+          <div id="word-entries" class="word-entries"></div>
+        </div>
+
+        <div id="sentence-result" hidden>
+          <h3>句意</h3>
+          <p id="sentence-translation" class="sentence-translation"></p>
+        </div>
       </section>
 
-      <p id="status" class="status"></p>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <button id="open-pdf" class="wide" type="button">用 PDF 文本阅读器打开当前页</button>
     </main>
 
     <script type="module" src="popup.js"></script>

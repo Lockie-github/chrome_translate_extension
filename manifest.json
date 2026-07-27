@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "划词大模型翻译",
-  "version": "0.2.0",
-  "description": "选中文本后显示悬浮球，使用自定义大模型 API 翻译网页和 PDF 文本。",
+  "version": "0.3.0",
+  "description": "使用自定义大模型 API 进行中英互译，支持弹窗输入、网页划词和 PDF 文本翻译。",
   "permissions": [
     "activeTab",
     "contextMenus",
