@@ -1,7 +1,7 @@
 (function () {
   const MAX_TEXT_LENGTH = 12000;
   const ROOT_ID = "llm-selection-translator-root";
-  const BUTTON_SIZE = 38;
+  const BUTTON_SIZE = 48;
 
   let root;
   let shadow;
@@ -17,7 +17,12 @@
   };
 
   function init() {
-    if (initialized || typeof chrome === "undefined" || !chrome.runtime?.id) {
+    if (
+      initialized ||
+      document.documentElement?.namespaceURI !== "http://www.w3.org/1999/xhtml" ||
+      typeof chrome === "undefined" ||
+      !chrome.runtime?.id
+    ) {
       return;
     }
     initialized = true;
@@ -79,12 +84,11 @@
         background: transparent;
         transform: translateY(-1px) scale(1.04);
       }
-      .ball img {
+      .ball svg {
         display: block;
-        height: 34px;
-        object-fit: contain;
+        height: 44px;
         pointer-events: none;
-        width: 34px;
+        width: 44px;
       }
       .panel {
         background: #fff;
@@ -157,7 +161,7 @@
     ball.className = "ball";
     ball.type = "button";
     ball.title = "翻译选中文本";
-    ball.innerHTML = `<img src="${chrome.runtime.getURL("translate.png")}" alt="">`;
+    ball.innerHTML = icon("translate");
     ball.addEventListener("mousedown", (event) => event.preventDefault());
     ball.addEventListener("click", translateSelection);
 
@@ -320,8 +324,61 @@
   }
 
   function icon(name) {
-    if (name === "languages") {
-      return `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>`;
+    if (name === "translate") {
+      // Inlined from /translate.svg so page CSP cannot block an extension resource request.
+      return `
+        <svg viewBox="0 0 512 512" aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="llmst-body-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fafafa"/>
+              <stop offset=".52" stop-color="#eee"/>
+              <stop offset="1" stop-color="#e5e5e5"/>
+            </linearGradient>
+            <linearGradient id="llmst-badge-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f7f7f7"/>
+              <stop offset="1" stop-color="#ededed"/>
+            </linearGradient>
+            <filter id="llmst-body-shadow" x="-12%" y="-12%" width="130%" height="135%">
+              <feDropShadow dx="1" dy="4" stdDeviation="3.5" flood-color="#000" flood-opacity=".52"/>
+            </filter>
+            <filter id="llmst-pin-shadow" x="-35%" y="-25%" width="170%" height="160%">
+              <feDropShadow dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".62"/>
+            </filter>
+            <filter id="llmst-mouth-shadow" x="-12%" y="-30%" width="130%" height="180%">
+              <feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="#000" flood-opacity=".28"/>
+            </filter>
+            <filter id="llmst-badge-shadow" x="-20%" y="-18%" width="150%" height="150%">
+              <feDropShadow dx="1" dy="2" stdDeviation="2.2" flood-color="#000" flood-opacity=".23"/>
+            </filter>
+          </defs>
+          <g fill="#363636" stroke="#1c1c1c" stroke-width="5" filter="url(#llmst-pin-shadow)">
+            <rect x="141" y="49" width="18" height="49" rx="9"/>
+            <rect x="247" y="49" width="18" height="49" rx="9"/>
+            <rect x="353" y="49" width="18" height="49" rx="9"/>
+            <rect x="47" y="141" width="50" height="18" rx="9"/>
+            <rect x="47" y="247" width="50" height="18" rx="9"/>
+            <rect x="47" y="353" width="50" height="18" rx="9"/>
+            <rect x="415" y="141" width="50" height="18" rx="9"/>
+            <rect x="415" y="247" width="50" height="18" rx="9"/>
+            <rect x="415" y="353" width="50" height="18" rx="9"/>
+            <rect x="141" y="415" width="18" height="50" rx="9"/>
+            <rect x="247" y="415" width="18" height="50" rx="9"/>
+            <rect x="353" y="415" width="18" height="50" rx="9"/>
+          </g>
+          <rect x="97" y="97" width="318" height="318" rx="50" fill="url(#llmst-body-fill)" stroke="#666" stroke-width="6" filter="url(#llmst-body-shadow)"/>
+          <rect x="115.5" y="115.5" width="281" height="281" rx="39" stroke="#777" stroke-width="4"/>
+          <circle cx="176" cy="184" r="42" fill="#000"/>
+          <circle cx="337" cy="184" r="42" fill="#000"/>
+          <rect x="128" y="284" width="236" height="36" rx="4" fill="#000" transform="rotate(-14 246 302)" filter="url(#llmst-mouth-shadow)"/>
+          <g filter="url(#llmst-badge-shadow)">
+            <rect x="317.5" y="320.5" width="76" height="77" rx="20" fill="url(#llmst-badge-fill)" stroke="#666" stroke-width="3"/>
+            <rect x="322.5" y="324.5" width="66" height="68" rx="16" stroke="#fff" stroke-width="2" stroke-opacity=".92"/>
+          </g>
+          <g stroke="#000" stroke-width="5.25" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M346 331v5.5M333 338h26.5M337 339c2 7 8.5 15 19.5 20.5M358.5 339c-2 8-8.8 17-21.5 22"/>
+            <path d="M360 376.5c2.2-7 4.7-14.1 7.3-19.8.9-1.9 1.8-2.7 2.8-2.7s1.9.8 2.8 2.7c2.6 5.7 5 12.8 7 19.8M363.5 366.8h13"/>
+          </g>
+        </svg>`;
     }
     if (name === "copy") {
       return `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
