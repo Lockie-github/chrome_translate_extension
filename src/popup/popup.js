@@ -5,10 +5,13 @@ const translateButton = document.querySelector("#translate");
 const translationResult = document.querySelector("#translation-result");
 const resultSource = document.querySelector("#result-source");
 const resultDirection = document.querySelector("#result-direction");
+const copyTranslationButton = document.querySelector("#copy-translation");
 const wordResult = document.querySelector("#word-result");
 const wordEntries = document.querySelector("#word-entries");
 const sentenceResult = document.querySelector("#sentence-result");
-const sentenceTranslation = document.querySelector("#sentence-translation");
+const sentencePairs = document.querySelector("#sentence-pairs");
+let currentTranslation = null;
+let copyResetTimer = null;
 
 document.querySelector("#options").addEventListener("click", () => {
   chrome.runtime.openOptionsPage();
@@ -38,6 +41,21 @@ translateInput.addEventListener("keydown", (event) => {
   }
   event.preventDefault();
   translateForm.requestSubmit();
+});
+
+copyTranslationButton.addEventListener("click", async () => {
+  const text = getTranslatedText(currentTranslation);
+  if (!text) {
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setStatus("");
+    showCopyFeedback("已复制");
+  } catch {
+    setStatus("复制失败，请重试。", true);
+  }
 });
 
 async function translateInputText() {
@@ -71,7 +89,11 @@ async function translateInputText() {
 }
 
 function showTranslation(translation) {
+  currentTranslation = translation;
+  showCopyFeedback("复制译文", false);
   resultSource.textContent = translation.source;
+  resultSource.hidden = translation.kind === "sentence";
+  resultSource.parentElement.classList.toggle("sentence-mode", translation.kind === "sentence");
   resultDirection.textContent = translation.direction === "zh-en" ? "中译英" : "英译中";
   wordResult.hidden = translation.kind !== "word";
   sentenceResult.hidden = translation.kind !== "sentence";
@@ -79,10 +101,72 @@ function showTranslation(translation) {
   if (translation.kind === "word") {
     wordEntries.replaceChildren(...translation.entries.map(createWordEntry));
   } else {
-    sentenceTranslation.textContent = translation.translation;
+    const showSource = translation.showSentenceSource !== false;
+    const displayPairs = showSource
+      ? translation.pairs
+      : [mergeTranslatedSentences(translation.pairs, translation.direction)];
+    sentencePairs.replaceChildren(
+      ...displayPairs.map((pair) => createSentencePair(pair, translation.direction, showSource))
+    );
   }
 
   translationResult.hidden = false;
+}
+
+function getTranslatedText(translation) {
+  if (!translation) {
+    return "";
+  }
+  if (translation.kind === "word") {
+    return translation.entries.map((entry) => entry.meanings.join("；")).join("\n");
+  }
+
+  const translatedLanguage = translation.direction === "zh-en" ? "english" : "chinese";
+  const sentences = translation.pairs.map((pair) => pair[translatedLanguage]);
+  if (translation.showSentenceSource !== false) {
+    return sentences.join("\n");
+  }
+  return sentences.join(translatedLanguage === "english" ? " " : "");
+}
+
+function showCopyFeedback(label, reset = true) {
+  window.clearTimeout(copyResetTimer);
+  copyTranslationButton.textContent = label;
+  if (reset) {
+    copyResetTimer = window.setTimeout(() => {
+      copyTranslationButton.textContent = "复制译文";
+    }, 1500);
+  }
+}
+
+function mergeTranslatedSentences(pairs, direction) {
+  const translatedLanguage = direction === "zh-en" ? "english" : "chinese";
+  const merged = { english: "", chinese: "" };
+  const separator = translatedLanguage === "english" ? " " : "";
+  merged[translatedLanguage] = pairs.map((pair) => pair[translatedLanguage]).join(separator);
+  return merged;
+}
+
+function createSentencePair(pair, direction, showSource) {
+  const item = document.createElement("div");
+  item.className = "sentence-pair";
+
+  const english = document.createElement("p");
+  english.className = "sentence-english";
+  english.lang = "en";
+  english.textContent = pair.english;
+
+  const chinese = document.createElement("p");
+  chinese.className = "sentence-chinese";
+  chinese.lang = "zh-CN";
+  chinese.textContent = pair.chinese;
+
+  if (showSource) {
+    item.append(english, chinese);
+  } else {
+    item.append(direction === "zh-en" ? english : chinese);
+  }
+  return item;
 }
 
 function createWordEntry(entry) {

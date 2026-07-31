@@ -51,6 +51,7 @@ function readForm() {
     customAuthHeader: form.elements.customAuthHeader.value.trim(),
     systemPrompt: form.elements.systemPrompt.value.trim() || DEFAULT_SETTINGS.systemPrompt,
     temperature: Number(form.elements.temperature.value || DEFAULT_SETTINGS.temperature),
+    showSentenceSource: form.elements.showSentenceSource.checked,
     autoOpenPdfReader: form.elements.autoOpenPdfReader.checked
   };
 }

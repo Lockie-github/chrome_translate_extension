@@ -106,6 +106,17 @@ textarea::placeholder {
   justify-content: space-between;
 }
 
+.result-heading.sentence-mode {
+  justify-content: flex-end;
+}
+
+.result-actions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
 .result-heading h2 {
   color: #101828;
   font-size: 20px;
@@ -123,6 +134,15 @@ textarea::placeholder {
   font-weight: 650;
   margin-top: 2px;
   padding: 4px 7px;
+}
+
+.copy-translation {
+  background: #eef2ff;
+  border-radius: 6px;
+  color: #123fbd;
+  font-size: 11px;
+  min-height: 26px;
+  padding: 0 8px;
 }
 
 .translation-result h3 {
@@ -156,14 +176,33 @@ textarea::placeholder {
   overflow-wrap: anywhere;
 }
 
-.sentence-translation {
+.sentence-pairs {
+  display: grid;
+  gap: 16px;
+}
+
+.sentence-pair {
+  display: grid;
+  gap: 4px;
+}
+
+.sentence-pair p {
   color: #101828;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.6;
   margin: 0;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
+}
+
+.sentence-english {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.sentence-chinese {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.55;
 }
 
 .status {

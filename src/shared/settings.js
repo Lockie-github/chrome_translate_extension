@@ -8,6 +8,7 @@ export const DEFAULT_SETTINGS = {
   systemPrompt:
     "You are a precise translation engine. Translate the user's text into the target language. Preserve meaning, tone, names, numbers, Markdown, and code blocks. Return only the translation.",
   temperature: 0.2,
+  showSentenceSource: true,
   autoOpenPdfReader: true
 };
 

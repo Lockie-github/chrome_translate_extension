@@ -28,7 +28,10 @@
       <section id="translation-result" class="translation-result" aria-live="polite" hidden>
         <div class="result-heading">
           <h2 id="result-source"></h2>
-          <span id="result-direction" class="direction"></span>
+          <div class="result-actions">
+            <span id="result-direction" class="direction"></span>
+            <button id="copy-translation" class="copy-translation" type="button">复制译文</button>
+          </div>
         </div>
 
         <div id="word-result" hidden>
@@ -38,7 +41,7 @@
 
         <div id="sentence-result" hidden>
           <h3>句意</h3>
-          <p id="sentence-translation" class="sentence-translation"></p>
+          <div id="sentence-pairs" class="sentence-pairs"></div>
         </div>
       </section>
 

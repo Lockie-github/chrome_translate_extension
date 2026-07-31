@@ -151,6 +151,20 @@ async function translateBilingual(text) {
   validateSettings(settings);
   const sourceLanguage = detectSourceLanguage(cleanText);
   const targetLanguage = sourceLanguage === "zh" ? "English" : "Simplified Chinese";
+  const showSentenceSource = settings.showSentenceSource !== false;
+  const sentenceInstructions = showSentenceSource
+    ? [
+        "For a sentence result, split the content into complete sentences and return a pairs array with exactly one matching English sentence and Chinese sentence in each item.",
+        "Keep the original order, do not merge unrelated sentences, and put English in the english field and Simplified Chinese in the chinese field regardless of translation direction.",
+        "For each sentence, return one natural translation of its complete meaning."
+      ]
+    : [
+        "For a sentence result, do not split the content into separate sentences.",
+        "Return one natural translation of the complete input in a single translation string."
+      ];
+  const sentenceResponseShape = showSentenceSource
+    ? '{"kind":"sentence","pairs":[{"english":"English sentence","chinese":"中文句子"}]}'
+    : '{"kind":"sentence","translation":"complete translation"}';
   const result = await requestModel(settings, [
     {
       role: "system",
@@ -159,12 +173,11 @@ async function translateBilingual(text) {
         `The source language is ${sourceLanguage === "zh" ? "Chinese" : "English"}. Translate it into ${targetLanguage}.`,
         "Classify a single lexical word or short Chinese lexical item as word.",
         "Classify phrases, idioms, questions, clauses, and sentences as sentence.",
-        "If the input contains multiple non-empty lines, return one sentence result and translate every line in order, preserving the line breaks.",
+        ...sentenceInstructions,
         "For a word, group several common meanings by part of speech. Use Chinese part-of-speech labels such as 名词、动词、形容词、副词、介词、代词、连词、感叹词、短语.",
-        "For a sentence, return one natural translation of the complete meaning.",
         "The response must be valid JSON. Escape line breaks inside JSON string values as \\n and do not use trailing commas.",
         "Do not include pronunciation, phonetics, examples, notes, Markdown, or any text outside the JSON object.",
-        'Return exactly one of these JSON shapes: {"kind":"word","entries":[{"partOfSpeech":"名词","meanings":["meaning 1","meaning 2"]}]} or {"kind":"sentence","translation":"complete translation"}.'
+        `Return exactly one of these JSON shapes: {"kind":"word","entries":[{"partOfSpeech":"名词","meanings":["meaning 1","meaning 2"]}]} or ${sentenceResponseShape}.`
       ].join(" ")
     },
     {
@@ -173,7 +186,10 @@ async function translateBilingual(text) {
     }
   ]);
 
-  return parseBilingualResult(result, cleanText, sourceLanguage);
+  return {
+    ...parseBilingualResult(result, cleanText, sourceLanguage),
+    showSentenceSource
+  };
 }
 
 async function requestModel(settings, messages) {
@@ -239,10 +255,10 @@ function parseBilingualResult(rawResult, source, sourceLanguage) {
     source,
     direction: sourceLanguage === "zh" ? "zh-en" : "en-zh"
   };
-  if (parsed?.kind === "sentence" && typeof parsed.translation === "string") {
-    const translation = parsed.translation.trim();
-    if (translation) {
-      return { ...base, kind: "sentence", translation };
+  if (parsed?.kind === "sentence") {
+    const pairs = normalizeSentencePairs(parsed, source, sourceLanguage);
+    if (pairs.length > 0) {
+      return { ...base, kind: "sentence", pairs };
     }
   }
 
@@ -261,6 +277,26 @@ function parseBilingualResult(rawResult, source, sourceLanguage) {
   }
 
   throw new Error("模型返回的翻译内容不完整，请重试。");
+}
+
+function normalizeSentencePairs(parsed, source, sourceLanguage) {
+  if (Array.isArray(parsed.pairs)) {
+    return parsed.pairs
+      .map((pair) => ({
+        english: String(pair?.english || "").trim(),
+        chinese: String(pair?.chinese || "").trim()
+      }))
+      .filter((pair) => pair.english && pair.chinese);
+  }
+
+  // Accept the previous response shape while users transition to the new prompt.
+  if (typeof parsed.translation === "string" && parsed.translation.trim()) {
+    return sourceLanguage === "zh"
+      ? [{ english: parsed.translation.trim(), chinese: source }]
+      : [{ english: source, chinese: parsed.translation.trim() }];
+  }
+
+  return [];
 }
 
 function parseModelJson(jsonText) {
