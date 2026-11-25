@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "划词大模型翻译",
-  "version": "0.3.0",
-  "description": "使用自定义大模型 API 进行中英互译，支持弹窗输入、网页划词和 PDF 文本翻译。",
+  "version": "0.4.0",
+  "description": "使用自定义大模型 API 进行翻译，支持弹窗输入、网页划词、整页翻译和 PDF 文本翻译。",
   "permissions": [
     "activeTab",
     "contextMenus",
@@ -37,7 +37,8 @@
       ],
       "js": [
         "src/shared/selection-ui.js",
-        "src/content/content.js"
+        "src/content/content.js",
+        "src/content/page-translation.js"
       ],
       "run_at": "document_idle",
       "all_frames": true

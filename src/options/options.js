@@ -6,6 +6,12 @@ const testButton = document.querySelector("#test-button");
 
 load();
 
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes.showPageSource) {
+    form.elements.showPageSource.checked = changes.showPageSource.newValue !== false;
+  }
+});
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   await saveSettings(readForm());
@@ -52,6 +58,7 @@ function readForm() {
     systemPrompt: form.elements.systemPrompt.value.trim() || DEFAULT_SETTINGS.systemPrompt,
     temperature: Number(form.elements.temperature.value || DEFAULT_SETTINGS.temperature),
     showSentenceSource: form.elements.showSentenceSource.checked,
+    showPageSource: form.elements.showPageSource.checked,
     autoOpenPdfReader: form.elements.autoOpenPdfReader.checked
   };
 }
